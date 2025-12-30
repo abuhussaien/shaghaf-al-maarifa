@@ -1,0 +1,1571 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>شغف المعرفة - منصة الدراسات الإسلامية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: #334155;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --emerald: #10b981;
+            --emerald-dark: #059669;
+            --amber: #f59e0b;
+            --amber-dark: #d97706;
+            --purple: #8b5cf6;
+            --purple-dark: #7c3aed;
+            --red: #ef4444;
+            --border: rgba(255,255,255,0.1);
+        }
+        
+        body {
+            font-family: 'Noto Kufi Arabic', sans-serif;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Animated Background */
+        .bg-orbs {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.3;
+            animation: float 20s infinite ease-in-out;
+        }
+        
+        .orb-1 { width: 400px; height: 400px; background: var(--emerald); top: -100px; right: -100px; }
+        .orb-2 { width: 300px; height: 300px; background: var(--purple); bottom: -50px; left: -50px; animation-delay: -5s; }
+        .orb-3 { width: 250px; height: 250px; background: var(--amber); top: 50%; left: 50%; animation-delay: -10s; }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(50px, -50px) scale(1.1); }
+            50% { transform: translate(-30px, 30px) scale(0.9); }
+            75% { transform: translate(-50px, -30px) scale(1.05); }
+        }
+        
+        /* Container */
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+        
+        /* Header */
+        header {
+            text-align: center;
+            padding: 2rem 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .ministry-text {
+            font-size: 0.75rem;
+            color: var(--emerald);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--emerald), var(--amber), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tagline {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        /* Stats Bar */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: rgba(255,255,255,0.05);
+            border-radius: 1rem;
+            border: 1px solid var(--border);
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 0.5rem;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--amber);
+        }
+        
+        .stat-label {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+        
+        /* Navigation */
+        .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            color: var(--text-primary);
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            margin-bottom: 1rem;
+        }
+        
+        .nav-btn:hover {
+            background: rgba(255,255,255,0.15);
+            transform: translateX(5px);
+        }
+        
+        /* Subject Cards */
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .subject-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .subject-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+        }
+        
+        .subject-card.tawheed::before { background: linear-gradient(90deg, var(--emerald), var(--emerald-dark)); }
+        .subject-card.hadith::before { background: linear-gradient(90deg, var(--amber), var(--amber-dark)); }
+        .subject-card.fiqh::before { background: linear-gradient(90deg, var(--purple), var(--purple-dark)); }
+        
+        .subject-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255,255,255,0.2);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        
+        .subject-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .subject-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subject-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+        
+        .subject-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        
+        .progress-bar {
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+            margin-top: 1rem;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+        
+        .subject-card.tawheed .progress-fill { background: linear-gradient(90deg, var(--emerald), var(--emerald-dark)); }
+        .subject-card.hadith .progress-fill { background: linear-gradient(90deg, var(--amber), var(--amber-dark)); }
+        .subject-card.fiqh .progress-fill { background: linear-gradient(90deg, var(--purple), var(--purple-dark)); }
+        
+        /* Lessons List */
+        .lessons-container {
+            display: none;
+        }
+        
+        .lessons-container.active {
+            display: block;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .lessons-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .lesson-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .lesson-item:hover:not(.locked) {
+            background: rgba(255,255,255,0.1);
+            transform: translateX(-5px);
+        }
+        
+        .lesson-item.locked {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .lesson-item.completed {
+            border-color: var(--emerald);
+        }
+        
+        .lesson-number {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+        
+        .tawheed-theme .lesson-number { background: linear-gradient(135deg, var(--emerald), var(--emerald-dark)); }
+        .hadith-theme .lesson-number { background: linear-gradient(135deg, var(--amber), var(--amber-dark)); }
+        .fiqh-theme .lesson-number { background: linear-gradient(135deg, var(--purple), var(--purple-dark)); }
+        
+        .lesson-info {
+            flex: 1;
+        }
+        
+        .lesson-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .lesson-status {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        
+        .lesson-badge {
+            font-size: 1.25rem;
+        }
+        
+        /* Lesson Content */
+        .lesson-container {
+            display: none;
+        }
+        
+        .lesson-container.active {
+            display: block;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .tab-btn {
+            padding: 0.75rem 1.5rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        
+        .tab-btn.active {
+            background: var(--emerald);
+            border-color: var(--emerald);
+            color: white;
+        }
+        
+        .tab-btn:hover:not(.active) {
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .tab-content {
+            display: none;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            border-radius: 1.5rem;
+            padding: 2rem;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .content-section {
+            margin-bottom: 1.5rem;
+        }
+        
+        .content-section h3 {
+            color: var(--emerald);
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+        }
+        
+        .content-section p, .content-section li {
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+        
+        .content-section ul, .content-section ol {
+            margin: 0.5rem 1.5rem;
+        }
+        
+        /* Quiz */
+        .quiz-container {
+            text-align: center;
+        }
+        
+        .quiz-progress {
+            margin-bottom: 1.5rem;
+        }
+        
+        .quiz-progress-text {
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+        
+        .question-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: right;
+        }
+        
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+        
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .option-btn {
+            padding: 1rem 1.5rem;
+            background: rgba(255,255,255,0.05);
+            border: 2px solid var(--border);
+            border-radius: 0.75rem;
+            color: var(--text-primary);
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 1rem;
+            text-align: right;
+            transition: all 0.3s;
+        }
+        
+        .option-btn:hover:not(:disabled) {
+            background: rgba(255,255,255,0.1);
+            border-color: var(--emerald);
+        }
+        
+        .option-btn.selected {
+            border-color: var(--amber);
+            background: rgba(245, 158, 11, 0.2);
+        }
+        
+        .option-btn.correct {
+            border-color: var(--emerald);
+            background: rgba(16, 185, 129, 0.2);
+        }
+        
+        .option-btn.wrong {
+            border-color: var(--red);
+            background: rgba(239, 68, 68, 0.2);
+        }
+        
+        .feedback-message {
+            padding: 1rem;
+            border-radius: 0.75rem;
+            margin-top: 1rem;
+            font-weight: 600;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .feedback-message.correct {
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid var(--emerald);
+            color: var(--emerald);
+        }
+        
+        .feedback-message.wrong {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid var(--red);
+            color: var(--red);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Games */
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+        
+        .game-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .game-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--purple);
+        }
+        
+        .game-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .game-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .game-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        
+        /* Matching Game */
+        .matching-game {
+            display: none;
+        }
+        
+        .matching-game.active {
+            display: block;
+        }
+        
+        .matching-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 1.5rem 0;
+        }
+        
+        .matching-column h4 {
+            text-align: center;
+            margin-bottom: 1rem;
+            color: var(--amber);
+        }
+        
+        .matching-item {
+            padding: 1rem;
+            background: rgba(255,255,255,0.05);
+            border: 2px solid var(--border);
+            border-radius: 0.75rem;
+            margin-bottom: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .matching-item:hover:not(.matched) {
+            border-color: var(--amber);
+        }
+        
+        .matching-item.selected {
+            border-color: var(--amber);
+            background: rgba(245, 158, 11, 0.2);
+        }
+        
+        .matching-item.matched {
+            border-color: var(--emerald);
+            background: rgba(16, 185, 129, 0.2);
+            cursor: default;
+        }
+        
+        .matching-item.wrong {
+            border-color: var(--red);
+            background: rgba(239, 68, 68, 0.2);
+            animation: shake 0.5s ease;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+        
+        .game-score {
+            text-align: center;
+            font-size: 1.2rem;
+            margin-top: 1rem;
+        }
+        
+        /* Results */
+        .results-container {
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .results-score {
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--emerald), var(--amber));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+        
+        .results-message {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .results-details {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .results-stat {
+            text-align: center;
+        }
+        
+        .results-stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+        
+        .results-stat-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        
+        /* Buttons */
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 0.75rem;
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(90deg, var(--emerald), var(--emerald-dark));
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+        }
+        
+        .btn-secondary {
+            background: rgba(255,255,255,0.1);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.15);
+        }
+        
+        /* Teacher Dashboard */
+        .teacher-btn {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            padding: 1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            color: var(--text-primary);
+            cursor: pointer;
+            font-size: 1.5rem;
+            z-index: 100;
+            transition: all 0.3s;
+        }
+        
+        .teacher-btn:hover {
+            background: var(--purple);
+            transform: scale(1.1);
+        }
+        
+        .dashboard-container {
+            display: none;
+        }
+        
+        .dashboard-container.active {
+            display: block;
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .dashboard-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        .dashboard-card-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+        
+        .dashboard-card-value.emerald { color: var(--emerald); }
+        .dashboard-card-value.amber { color: var(--amber); }
+        .dashboard-card-value.purple { color: var(--purple); }
+        
+        .dashboard-card-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .students-table {
+            width: 100%;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            overflow: hidden;
+        }
+        
+        .students-table th,
+        .students-table td {
+            padding: 1rem;
+            text-align: right;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .students-table th {
+            background: rgba(255,255,255,0.05);
+            color: var(--emerald);
+            font-weight: 600;
+        }
+        
+        .students-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        /* Confetti */
+        .confetti {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .confetti.active {
+            display: block;
+        }
+        
+        .confetti-piece {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            animation: confetti-fall 3s ease-out forwards;
+        }
+        
+        @keyframes confetti-fall {
+            0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .logo { font-size: 2rem; }
+            .stats-bar { grid-template-columns: repeat(2, 1fr); }
+            .matching-columns { grid-template-columns: 1fr; }
+            .teacher-btn { bottom: 1rem; left: 1rem; }
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-primary); }
+        ::-webkit-scrollbar-thumb { background: var(--bg-card); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
+    </style>
+</head>
+<body>
+    <!-- Background Orbs -->
+    <div class="bg-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+    
+    <!-- Confetti Container -->
+    <div class="confetti" id="confetti"></div>
+    
+    <!-- Teacher Dashboard Button -->
+    <button class="teacher-btn" onclick="showDashboard()" title="لوحة تحكم المعلم">⚙️</button>
+    
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="ministry-text">
+                المملكة العربية السعودية - وزارة التعليم - إدارة تعليم جدة<br>
+                مدرسة معن بن عدي الابتدائية - أ / محمد حسين جابر القحطاني
+            </div>
+            <div class="logo">شغف المعرفة</div>
+            <div class="tagline">منصة تفاعلية للدراسات الإسلامية - الصف السادس</div>
+        </header>
+        
+        <!-- Stats Bar -->
+        <div class="stats-bar" id="statsBar">
+            <div class="stat-item">
+                <div class="stat-value" id="totalPoints">0</div>
+                <div class="stat-label">النقاط</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="currentLevel">1</div>
+                <div class="stat-label">المستوى</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="completedLessons">0</div>
+                <div class="stat-label">الدروس</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="currentStreak">0</div>
+                <div class="stat-label">الإنجاز</div>
+            </div>
+        </div>
+        
+        <!-- Home Screen - Subjects -->
+        <div id="homeScreen">
+            <div class="subjects-grid">
+                <!-- Tawheed -->
+                <div class="subject-card tawheed" onclick="showSubject('tawheed')">
+                    <div class="subject-icon">☪️</div>
+                    <div class="subject-title">التوحيد</div>
+                    <div class="subject-desc">دراسة أصول العقيدة الإسلامية والإيمان</div>
+                    <div class="subject-meta">
+                        <span>📚 9 دروس</span>
+                        <span>📝 90 سؤال</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="tawheedProgress" style="width: 0%"></div>
+                    </div>
+                </div>
+                
+                <!-- Hadith -->
+                <div class="subject-card hadith" onclick="showSubject('hadith')">
+                    <div class="subject-icon">📖</div>
+                    <div class="subject-title">الحديث والسيرة</div>
+                    <div class="subject-desc">هدي النبي ﷺ في المعاملات والأخلاق</div>
+                    <div class="subject-meta">
+                        <span>📚 14 درس</span>
+                        <span>📝 140 سؤال</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="hadithProgress" style="width: 0%"></div>
+                    </div>
+                </div>
+                
+                <!-- Fiqh -->
+                <div class="subject-card fiqh" onclick="showSubject('fiqh')">
+                    <div class="subject-icon">⚖️</div>
+                    <div class="subject-title">الفقه</div>
+                    <div class="subject-desc">أحكام العبادات والصلوات</div>
+                    <div class="subject-meta">
+                        <span>📚 9 دروس</span>
+                        <span>📝 90 سؤال</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="fiqhProgress" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Lessons Screen -->
+        <div id="lessonsScreen" class="lessons-container">
+            <button class="nav-btn" onclick="goHome()">→ العودة للرئيسية</button>
+            <div class="section-title" id="subjectTitle"></div>
+            <div class="lessons-list" id="lessonsList"></div>
+        </div>
+        
+        <!-- Lesson Content Screen -->
+        <div id="lessonScreen" class="lesson-container">
+            <button class="nav-btn" onclick="goToLessons()">→ العودة للدروس</button>
+            <div class="section-title" id="lessonTitle"></div>
+            
+            <div class="tabs">
+                <button class="tab-btn active" onclick="showTab('content')">📖 المحتوى</button>
+                <button class="tab-btn" onclick="showTab('quiz')">📝 الاختبار</button>
+                <button class="tab-btn" onclick="showTab('games')">🎮 الألعاب</button>
+            </div>
+            
+            <div class="tab-content active" id="contentTab">
+                <div id="lessonContent"></div>
+            </div>
+            
+            <div class="tab-content" id="quizTab">
+                <div id="quizContent"></div>
+            </div>
+            
+            <div class="tab-content" id="gamesTab">
+                <div class="games-grid" id="gamesGrid">
+                    <div class="game-card" onclick="startGame('matching')">
+                        <div class="game-icon">🧩</div>
+                        <div class="game-title">لعبة المطابقة</div>
+                        <div class="game-desc">طابق المصطلحات بتعريفاتها</div>
+                    </div>
+                    <div class="game-card" onclick="startGame('sorting')">
+                        <div class="game-icon">📊</div>
+                        <div class="game-title">لعبة الترتيب</div>
+                        <div class="game-desc">رتب العناصر بالتسلسل الصحيح</div>
+                    </div>
+                </div>
+                
+                <div class="matching-game" id="matchingGame">
+                    <button class="nav-btn" onclick="closeGame()">→ العودة للألعاب</button>
+                    <h3 style="text-align: center; margin-bottom: 1rem;">🧩 لعبة المطابقة</h3>
+                    <p style="text-align: center; color: var(--text-secondary); margin-bottom: 1rem;">اختر مصطلحاً ثم اختر تعريفه المناسب</p>
+                    <div class="matching-columns">
+                        <div class="matching-column">
+                            <h4>المصطلحات</h4>
+                            <div id="termsColumn"></div>
+                        </div>
+                        <div class="matching-column">
+                            <h4>التعريفات</h4>
+                            <div id="definitionsColumn"></div>
+                        </div>
+                    </div>
+                    <div class="game-score">المطابقات: <span id="matchCount">0</span> / <span id="totalMatches">0</span></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Teacher Dashboard -->
+        <div id="dashboardScreen" class="dashboard-container">
+            <button class="nav-btn" onclick="goHome()">→ العودة للرئيسية</button>
+            <div class="section-title">⚙️ لوحة تحكم المعلم</div>
+            
+            <div class="dashboard-grid">
+                <div class="dashboard-card">
+                    <div class="dashboard-card-value emerald" id="dashTotalStudents">32</div>
+                    <div class="dashboard-card-label">عدد الطلاب</div>
+                </div>
+                <div class="dashboard-card">
+                    <div class="dashboard-card-value amber" id="dashAvgScore">78%</div>
+                    <div class="dashboard-card-label">متوسط الدرجات</div>
+                </div>
+                <div class="dashboard-card">
+                    <div class="dashboard-card-value purple" id="dashCompleted">156</div>
+                    <div class="dashboard-card-label">دروس مكتملة</div>
+                </div>
+                <div class="dashboard-card">
+                    <div class="dashboard-card-value emerald" id="dashActive">28</div>
+                    <div class="dashboard-card-label">نشط اليوم</div>
+                </div>
+            </div>
+            
+            <h3 style="margin: 2rem 0 1rem;">📊 أداء الطلاب</h3>
+            <table class="students-table">
+                <thead>
+                    <tr>
+                        <th>الطالب</th>
+                        <th>المستوى</th>
+                        <th>النقاط</th>
+                        <th>الإكمال</th>
+                        <th>آخر نشاط</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>أحمد محمد العلي</td>
+                        <td>7</td>
+                        <td>2,450</td>
+                        <td>78%</td>
+                        <td>اليوم</td>
+                    </tr>
+                    <tr>
+                        <td>نورة خالد السعيد</td>
+                        <td>8</td>
+                        <td>2,890</td>
+                        <td>92%</td>
+                        <td>اليوم</td>
+                    </tr>
+                    <tr>
+                        <td>فهد عبدالله الحربي</td>
+                        <td>5</td>
+                        <td>1,650</td>
+                        <td>54%</td>
+                        <td>أمس</td>
+                    </tr>
+                    <tr>
+                        <td>سارة علي الغامدي</td>
+                        <td>6</td>
+                        <td>2,100</td>
+                        <td>68%</td>
+                        <td>اليوم</td>
+                    </tr>
+                    <tr>
+                        <td>محمد سعد القحطاني</td>
+                        <td>4</td>
+                        <td>1,280</td>
+                        <td>41%</td>
+                        <td>منذ 3 أيام</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // DATA - Curriculum Structure
+        // ============================================
+        const curriculumData = {
+            tawheed: {
+                name: 'التوحيد',
+                icon: '☪️',
+                color: 'emerald',
+                lessons: [
+                    {
+                        id: 't1',
+                        title: 'الإيمان',
+                        content: `
+                            <div class="content-section">
+                                <h3>تعريف الإيمان</h3>
+                                <p>الإيمان هو: <strong>اعتقاد بالقلب، وقول باللسان، وعمل بالجوارح</strong>، يزيد بالطاعة وينقص بالمعصية.</p>
+                            </div>
+                            <div class="content-section">
+                                <h3>أركان الإيمان الستة</h3>
+                                <ol>
+                                    <li>الإيمان بالله</li>
+                                    <li>الإيمان بالملائكة</li>
+                                    <li>الإيمان بالكتب</li>
+                                    <li>الإيمان بالرسل</li>
+                                    <li>الإيمان باليوم الآخر</li>
+                                    <li>الإيمان بالقدر خيره وشره</li>
+                                </ol>
+                            </div>
+                            <div class="content-section">
+                                <h3>ثمرات الإيمان</h3>
+                                <ul>
+                                    <li>ولاية الله للمؤمنين</li>
+                                    <li>الطمأنينة والسكينة</li>
+                                    <li>النصر والتمكين</li>
+                                    <li>الفوز بالجنة</li>
+                                </ul>
+                            </div>
+                        `,
+                        quiz: [
+                            { q: 'ما تعريف الإيمان الصحيح؟', options: ['قول باللسان فقط', 'اعتقاد بالقلب فقط', 'اعتقاد بالقلب وقول باللسان وعمل بالجوارح', 'عمل بالجوارح فقط'], correct: 2 },
+                            { q: 'كم عدد أركان الإيمان؟', options: ['خمسة', 'ستة', 'سبعة', 'أربعة'], correct: 1 },
+                            { q: 'الإيمان يزيد بـ...', options: ['المعصية', 'الطاعة', 'النوم', 'الأكل'], correct: 1 },
+                            { q: 'ما أول ركن من أركان الإيمان؟', options: ['الإيمان بالملائكة', 'الإيمان بالله', 'الإيمان بالرسل', 'الإيمان بالكتب'], correct: 1 },
+                            { q: 'من ثمرات الإيمان:', options: ['الخوف والقلق', 'الطمأنينة والسكينة', 'الحزن الدائم', 'الغضب'], correct: 1 },
+                            { q: 'الإيمان بالقدر يعني:', options: ['الإيمان بالملائكة', 'الإيمان بما قدره الله خيره وشره', 'الإيمان بالكتب', 'الإيمان بالرسل'], correct: 1 },
+                            { q: 'الإيمان ينقص بـ...', options: ['الطاعة', 'المعصية', 'الصلاة', 'الصيام'], correct: 1 },
+                            { q: 'الركن الثاني من أركان الإيمان:', options: ['الإيمان بالله', 'الإيمان بالملائكة', 'الإيمان بالكتب', 'الإيمان بالرسل'], correct: 1 },
+                            { q: 'الإيمان باليوم الآخر هو الركن:', options: ['الثالث', 'الرابع', 'الخامس', 'السادس'], correct: 2 },
+                            { q: 'من ثمرات الإيمان الفوز بـ:', options: ['النار', 'الجنة', 'الدنيا فقط', 'المال'], correct: 1 }
+                        ],
+                        matchingPairs: [
+                            { term: 'الإيمان بالله', definition: 'الركن الأول' },
+                            { term: 'الإيمان بالملائكة', definition: 'الركن الثاني' },
+                            { term: 'الإيمان بالكتب', definition: 'الركن الثالث' },
+                            { term: 'الإيمان بالرسل', definition: 'الركن الرابع' },
+                            { term: 'الإيمان باليوم الآخر', definition: 'الركن الخامس' },
+                            { term: 'الإيمان بالقدر', definition: 'الركن السادس' }
+                        ]
+                    },
+                    { id: 't2', title: 'شُعَب الإيمان', content: '<div class="content-section"><h3>شعب الإيمان</h3><p>شعب الإيمان هي أعمال وأقوال واعتقادات تزيد الإيمان.</p><h3>أنواع شعب الإيمان</h3><ol><li>شعب قلبية: كالحب والخوف والرجاء</li><li>شعب قولية: كالذكر والدعاء</li><li>شعب عملية: كالصلاة والصيام</li></ol></div>', quiz: [{ q: 'ما هي شعب الإيمان؟', options: ['أعمال تنقص الإيمان', 'أعمال تزيد الإيمان', 'أركان الإيمان', 'نواقض الإيمان'], correct: 1 }], matchingPairs: [{ term: 'شعب قلبية', definition: 'الحب والخوف' }, { term: 'شعب قولية', definition: 'الذكر والدعاء' }, { term: 'شعب عملية', definition: 'الصلاة والصيام' }] },
+                    { id: 't3', title: 'نواقض الإيمان ومنقصاته', content: '<div class="content-section"><h3>نواقض الإيمان</h3><p>هي الأمور التي تُبطل الإيمان كالشرك بالله.</p></div>', quiz: [{ q: 'ما هي نواقض الإيمان؟', options: ['ما يزيد الإيمان', 'ما يُبطل الإيمان', 'ما يقوي الإيمان', 'أركان الإيمان'], correct: 1 }], matchingPairs: [] },
+                    { id: 't4', title: 'معنى الشرك', content: '<div class="content-section"><h3>تعريف الشرك</h3><p>الشرك هو: صرف شيء من العبادة لغير الله تعالى.</p></div>', quiz: [{ q: 'ما معنى الشرك؟', options: ['عبادة الله وحده', 'صرف العبادة لغير الله', 'الإيمان بالله', 'الصلاة'], correct: 1 }], matchingPairs: [] },
+                    { id: 't5', title: 'أنواع الشرك', content: '<div class="content-section"><h3>أنواع الشرك</h3><ol><li>الشرك الأكبر: يُخرج من الملة</li><li>الشرك الأصغر: لا يُخرج من الملة لكنه خطير</li></ol></div>', quiz: [{ q: 'الشرك الأكبر:', options: ['لا يُخرج من الملة', 'يُخرج من الملة', 'صغيرة', 'مباح'], correct: 1 }], matchingPairs: [{ term: 'الشرك الأكبر', definition: 'يُخرج من الملة' }, { term: 'الشرك الأصغر', definition: 'لا يُخرج من الملة' }] },
+                    { id: 't6', title: 'مظاهر الشرك', content: '<div class="content-section"><h3>مظاهر الشرك</h3><p>من مظاهر الشرك: دعاء غير الله، والذبح لغير الله.</p></div>', quiz: [{ q: 'من مظاهر الشرك:', options: ['الصلاة لله', 'دعاء غير الله', 'قراءة القرآن', 'الصيام'], correct: 1 }], matchingPairs: [] },
+                    { id: 't7', title: 'البِدَع', content: '<div class="content-section"><h3>تعريف البدعة</h3><p>البدعة: إحداث أمر في الدين لم يأذن به الله ولا رسوله ﷺ.</p></div>', quiz: [{ q: 'ما تعريف البدعة؟', options: ['اتباع السنة', 'إحداث أمر في الدين لم يأذن به الله', 'قراءة القرآن', 'الصلاة'], correct: 1 }], matchingPairs: [] },
+                    { id: 't8', title: 'الذنوب والمعاصي', content: '<div class="content-section"><h3>أنواع الذنوب</h3><ol><li>الكبائر: كالشرك والقتل</li><li>الصغائر: ما دون ذلك</li></ol></div>', quiz: [{ q: 'الكبائر مثل:', options: ['الصلاة', 'الشرك', 'الصيام', 'الزكاة'], correct: 1 }], matchingPairs: [{ term: 'الكبائر', definition: 'الشرك والقتل' }, { term: 'الصغائر', definition: 'ما دون الكبائر' }] },
+                    { id: 't9', title: 'منهج أهل السنة والجماعة', content: '<div class="content-section"><h3>منهج أهل السنة</h3><p>اتباع الكتاب والسنة وما كان عليه الصحابة رضي الله عنهم.</p></div>', quiz: [{ q: 'منهج أهل السنة:', options: ['اتباع الهوى', 'اتباع الكتاب والسنة', 'البدع', 'الشرك'], correct: 1 }], matchingPairs: [] }
+                ]
+            },
+            hadith: {
+                name: 'الحديث والسيرة',
+                icon: '📖',
+                color: 'amber',
+                lessons: [
+                    { id: 'h1', title: 'رحمة النبي ﷺ للصغار', content: '<div class="content-section"><h3>رحمة النبي بالأطفال</h3><p>كان النبي ﷺ يرحم الصغار ويلاطفهم ويدعو لهم.</p></div>', quiz: [{ q: 'كان النبي ﷺ مع الصغار:', options: ['قاسياً', 'رحيماً', 'غاضباً', 'مهملاً'], correct: 1 }], matchingPairs: [] },
+                    { id: 'h2', title: 'دعاء النبي ﷺ للصغار', content: '<div class="content-section"><h3>دعاء النبي للأطفال</h3><p>كان ﷺ يدعو للصغار بالبركة والخير.</p></div>', quiz: [{ q: 'كان النبي ﷺ يدعو للصغار بـ:', options: ['الشر', 'البركة والخير', 'المرض', 'الفقر'], correct: 1 }], matchingPairs: [] },
+                    { id: 'h3', title: 'الرحمة بالصغير وتقدير الكبير', content: '<div class="content-section"><h3>الآداب</h3><p>من هدي النبي ﷺ الرحمة بالصغير واحترام الكبير.</p></div>', quiz: [{ q: 'من هدي النبي ﷺ:', options: ['إهمال الصغير', 'الرحمة بالصغير', 'إهانة الكبير', 'الغضب'], correct: 1 }], matchingPairs: [] },
+                    { id: 'h4', title: 'تقبيل الأطفال ورحمتهم', content: '<div class="content-section"><h3>شفقة النبي ﷺ</h3><p>كان ﷺ يُقبّل الأطفال ويُظهر الرحمة لهم.</p></div>', quiz: [{ q: 'كان النبي ﷺ:', options: ['يبتعد عن الأطفال', 'يُقبّل الأطفال', 'يتجاهلهم', 'يغضب منهم'], correct: 1 }], matchingPairs: [] },
+                    { id: 'h5', title: 'مسائل صلة الرحم', content: '<div class="content-section"><h3>صلة الرحم</h3><p>صلة الرحم من أعظم الطاعات وقطيعتها من الكبائر.</p></div>', quiz: [{ q: 'صلة الرحم:', options: ['من الكبائر', 'من أعظم الطاعات', 'مكروهة', 'محرمة'], correct: 1 }], matchingPairs: [] },
+                    { id: 'h6', title: 'التواصل بالسلام', content: '<div class="content-section"><h3>السلام</h3><p>إفشاء السلام من أسباب دخول الجنة والمحبة بين الناس.</p></div>', quiz: [{ q: 'إفشاء السلام:', options: ['مكروه', 'من أسباب دخول الجنة', 'محرم', 'غير مهم'], correct: 1 }], matchingPairs: [] },
+                    { id: 'h7', title: 'آداب المجلس', content: '<div class="content-section"><h3>آداب المجلس</h3><p>من الآداب: عدم التفريق بين اثنين، والجلوس حيث ينتهي المجلس.</p></div>', quiz: [{ q: 'من آداب المجلس:', options: ['التفريق بين اثنين', 'الجلوس حيث ينتهي المجلس', 'رفع الصوت', 'المقاطعة'], correct: 1 }], matchingPairs: [] },
+                    { id: 'h8', title: 'هدي النبي ﷺ مع المريض', content: '<div class="content-section"><h3>عيادة المريض</h3><p>كان ﷺ يزور المرضى ويدعو لهم بالشفاء.</p></div>', quiz: [{ q: 'كان النبي ﷺ مع المريض:', options: ['يتجاهله', 'يزوره ويدعو له', 'يبتعد عنه', 'لا يسأل عنه'], correct: 1 }], matchingPairs: [] },
+                    { id: 'h9', title: 'معاملة القائمين على الحوائج', content: '<div class="content-section"><h3>شكر المعروف</h3><p>من لم يشكر الناس لم يشكر الله.</p></div>', quiz: [{ q: 'من لم يشكر الناس:', options: ['شكر الله', 'لم يشكر الله', 'أحسن', 'لا شيء'], correct: 1 }], matchingPairs: [] },
+                    { id: 'h10', title: 'نهي النبي ﷺ عن الإسراف', content: '<div class="content-section"><h3>الاعتدال</h3><p>نهى النبي ﷺ عن الإسراف في كل شيء.</p></div>', quiz: [{ q: 'الإسراف:', options: ['مطلوب', 'منهي عنه', 'مستحب', 'واجب'], correct: 1 }], matchingPairs: [] },
+                    { id: 'h11', title: 'التعامل مع الموجودين بالمجلس', content: '<div class="content-section"><h3>حسن المعاملة</h3><p>يجب إكرام الجالسين واحترامهم.</p></div>', quiz: [{ q: 'التعامل مع الجالسين يجب أن يكون:', options: ['بالإهانة', 'بالإكرام', 'بالتجاهل', 'بالغضب'], correct: 1 }], matchingPairs: [] },
+                    { id: 'h12', title: 'التعامل مع غير المسلمين', content: '<div class="content-section"><h3>العدل والإحسان</h3><p>أمر الإسلام بالعدل مع الجميع والإحسان إليهم.</p></div>', quiz: [{ q: 'التعامل مع غير المسلمين:', options: ['بالظلم', 'بالعدل', 'بالإهمال', 'بالكراهية'], correct: 1 }], matchingPairs: [] },
+                    { id: 'h13', title: 'صلة الوالدين غير المسلمين', content: '<div class="content-section"><h3>بر الوالدين</h3><p>يجب بر الوالدين حتى لو كانا غير مسلمين.</p></div>', quiz: [{ q: 'بر الوالدين غير المسلمين:', options: ['محرم', 'واجب', 'مكروه', 'غير مهم'], correct: 1 }], matchingPairs: [] },
+                    { id: 'h14', title: 'إحسان النبي ﷺ للحيوان', content: '<div class="content-section"><h3>الرفق بالحيوان</h3><p>أمر النبي ﷺ بالرفق بالحيوان وعدم إيذائه. قال ﷺ: "في كل ذات كبد رطبة أجر".</p></div>', quiz: [{ q: 'التعامل مع الحيوان يجب أن يكون:', options: ['بالقسوة', 'بالرفق', 'بالإهمال', 'بالضرب'], correct: 1 }], matchingPairs: [{ term: 'الرفق بالحيوان', definition: 'فيه أجر عظيم' }, { term: 'إيذاء الحيوان', definition: 'منهي عنه' }] }
+                ]
+            },
+            fiqh: {
+                name: 'الفقه',
+                icon: '⚖️',
+                color: 'purple',
+                lessons: [
+                    { id: 'f1', title: 'صلاة الجمعة', content: '<div class="content-section"><h3>حكم صلاة الجمعة</h3><p>صلاة الجمعة فرض عين على كل مسلم بالغ عاقل ذكر مقيم.</p><h3>شروطها</h3><ul><li>دخول الوقت</li><li>العدد المعتبر</li><li>الاستيطان</li></ul></div>', quiz: [{ q: 'صلاة الجمعة:', options: ['سنة', 'فرض عين', 'مستحبة', 'مكروهة'], correct: 1 }, { q: 'عدد ركعات صلاة الجمعة:', options: ['أربع', 'ثلاث', 'ركعتان', 'واحدة'], correct: 2 }], matchingPairs: [{ term: 'صلاة الجمعة', definition: 'فرض عين' }, { term: 'عدد الركعات', definition: 'ركعتان' }] },
+                    { id: 'f2', title: 'مستحبات الجمعة', content: '<div class="content-section"><h3>سنن يوم الجمعة</h3><ul><li>الغسل</li><li>التطيب</li><li>لبس أحسن الثياب</li><li>التبكير للمسجد</li><li>قراءة سورة الكهف</li></ul></div>', quiz: [{ q: 'من مستحبات الجمعة:', options: ['النوم', 'الغسل والتطيب', 'الأكل الكثير', 'اللعب'], correct: 1 }], matchingPairs: [] },
+                    { id: 'f3', title: 'مشروعية العيد', content: '<div class="content-section"><h3>الحكمة من العيدين</h3><p>شرع الله العيدين فرحاً بإتمام العبادة.</p></div>', quiz: [{ q: 'عدد الأعياد في الإسلام:', options: ['واحد', 'اثنان', 'ثلاثة', 'أربعة'], correct: 1 }], matchingPairs: [] },
+                    { id: 'f4', title: 'صلاة العيدين', content: '<div class="content-section"><h3>صفة صلاة العيد</h3><p>ركعتان: يُكبّر في الأولى سبعاً وفي الثانية خمساً.</p></div>', quiz: [{ q: 'التكبيرات في الركعة الأولى:', options: ['خمس', 'ست', 'سبع', 'ثمان'], correct: 2 }], matchingPairs: [{ term: 'الركعة الأولى', definition: 'سبع تكبيرات' }, { term: 'الركعة الثانية', definition: 'خمس تكبيرات' }] },
+                    { id: 'f5', title: 'سنن العيدين', content: '<div class="content-section"><h3>آداب العيد</h3><ul><li>الغسل</li><li>التجمل</li><li>التهنئة</li><li>مخالفة الطريق</li></ul></div>', quiz: [{ q: 'من سنن العيد:', options: ['الحزن', 'التهنئة', 'البكاء', 'النوم'], correct: 1 }], matchingPairs: [] },
+                    { id: 'f6', title: 'الاستسقاء', content: '<div class="content-section"><h3>صلاة الاستسقاء</h3><p>هي صلاة لطلب نزول المطر عند الحاجة.</p></div>', quiz: [{ q: 'صلاة الاستسقاء لـ:', options: ['شكر النعمة', 'طلب المطر', 'العيد', 'الجنازة'], correct: 1 }], matchingPairs: [] },
+                    { id: 'f7', title: 'صلاة الكسوف والخسوف', content: '<div class="content-section"><h3>وقتها</h3><p>تُصلى عند كسوف الشمس أو خسوف القمر.</p></div>', quiz: [{ q: 'صلاة الكسوف تكون عند:', options: ['طلوع الشمس', 'كسوف الشمس', 'غروب الشمس', 'منتصف الليل'], correct: 1 }], matchingPairs: [] },
+                    { id: 'f8', title: 'صفة صلاة الكسوف', content: '<div class="content-section"><h3>كيفيتها</h3><p>ركعتان في كل ركعة قيامان وركوعان.</p></div>', quiz: [{ q: 'في كل ركعة من صلاة الكسوف:', options: ['ركوع واحد', 'ركوعان', 'ثلاث ركوعات', 'أربع ركوعات'], correct: 1 }], matchingPairs: [] },
+                    { id: 'f9', title: 'الصلاة على الميت', content: '<div class="content-section"><h3>صلاة الجنازة</h3><p>فرض كفاية على المسلمين. وهي أربع تكبيرات.</p></div>', quiz: [{ q: 'صلاة الجنازة:', options: ['فرض عين', 'فرض كفاية', 'سنة', 'مكروهة'], correct: 1 }, { q: 'عدد التكبيرات في صلاة الجنازة:', options: ['ثلاث', 'أربع', 'خمس', 'ست'], correct: 1 }], matchingPairs: [{ term: 'صلاة الجنازة', definition: 'فرض كفاية' }, { term: 'عدد التكبيرات', definition: 'أربع تكبيرات' }] }
+                ]
+            }
+        };
+
+        // ============================================
+        // STATE
+        // ============================================
+        let state = {
+            currentSubject: null,
+            currentLesson: null,
+            currentQuestionIndex: 0,
+            quizAnswers: [],
+            points: 0,
+            level: 1,
+            completedLessons: [],
+            streak: 0,
+            matchingSelected: { term: null, definition: null },
+            matchedPairs: [],
+            gameActive: false
+        };
+
+        // Load state from localStorage
+        function loadState() {
+            const saved = localStorage.getItem('shaghafState');
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                state = { ...state, ...parsed };
+                updateStats();
+                updateProgress();
+            }
+        }
+
+        // Save state to localStorage
+        function saveState() {
+            localStorage.setItem('shaghafState', JSON.stringify({
+                points: state.points,
+                level: state.level,
+                completedLessons: state.completedLessons,
+                streak: state.streak
+            }));
+        }
+
+        // ============================================
+        // UI UPDATES
+        // ============================================
+        function updateStats() {
+            document.getElementById('totalPoints').textContent = state.points;
+            document.getElementById('currentLevel').textContent = state.level;
+            document.getElementById('completedLessons').textContent = state.completedLessons.length;
+            document.getElementById('currentStreak').textContent = state.streak;
+        }
+
+        function updateProgress() {
+            ['tawheed', 'hadith', 'fiqh'].forEach(subject => {
+                const lessons = curriculumData[subject].lessons;
+                const completed = state.completedLessons.filter(id => id.startsWith(subject[0])).length;
+                const percent = (completed / lessons.length) * 100;
+                document.getElementById(`${subject}Progress`).style.width = `${percent}%`;
+            });
+        }
+
+        function addPoints(amount) {
+            state.points += amount;
+            const newLevel = Math.floor(state.points / 100) + 1;
+            if (newLevel > state.level) {
+                state.level = newLevel;
+                showConfetti();
+                showFeedback(`🎉 تهانينا! وصلت للمستوى ${state.level}`, 'correct');
+            }
+            updateStats();
+            saveState();
+        }
+
+        // ============================================
+        // NAVIGATION
+        // ============================================
+        function goHome() {
+            document.getElementById('homeScreen').style.display = 'block';
+            document.getElementById('lessonsScreen').classList.remove('active');
+            document.getElementById('lessonScreen').classList.remove('active');
+            document.getElementById('dashboardScreen').classList.remove('active');
+            updateProgress();
+        }
+
+        function showSubject(subjectKey) {
+            state.currentSubject = subjectKey;
+            const subject = curriculumData[subjectKey];
+            
+            document.getElementById('homeScreen').style.display = 'none';
+            document.getElementById('lessonsScreen').classList.add('active');
+            document.getElementById('subjectTitle').innerHTML = `${subject.icon} ${subject.name}`;
+            document.getElementById('lessonsScreen').className = `lessons-container active ${subjectKey}-theme`;
+            
+            const lessonsList = document.getElementById('lessonsList');
+            lessonsList.innerHTML = '';
+            
+            subject.lessons.forEach((lesson, index) => {
+                const isCompleted = state.completedLessons.includes(lesson.id);
+                const isLocked = index > 0 && !state.completedLessons.includes(subject.lessons[index - 1].id);
+                
+                const lessonEl = document.createElement('div');
+                lessonEl.className = `lesson-item ${isCompleted ? 'completed' : ''} ${isLocked ? 'locked' : ''}`;
+                lessonEl.innerHTML = `
+                    <div class="lesson-number">${index + 1}</div>
+                    <div class="lesson-info">
+                        <div class="lesson-title">${lesson.title}</div>
+                        <div class="lesson-status">${isCompleted ? '✓ مكتمل' : isLocked ? '🔒 مقفل' : 'ابدأ الدرس'}</div>
+                    </div>
+                    <div class="lesson-badge">${isCompleted ? '✅' : isLocked ? '🔒' : '➡️'}</div>
+                `;
+                
+                if (!isLocked) {
+                    lessonEl.onclick = () => showLesson(lesson.id);
+                }
+                
+                lessonsList.appendChild(lessonEl);
+            });
+        }
+
+        function goToLessons() {
+            document.getElementById('lessonScreen').classList.remove('active');
+            document.getElementById('lessonsScreen').classList.add('active');
+            state.gameActive = false;
+        }
+
+        function showLesson(lessonId) {
+            const subject = curriculumData[state.currentSubject];
+            const lesson = subject.lessons.find(l => l.id === lessonId);
+            state.currentLesson = lesson;
+            
+            document.getElementById('lessonsScreen').classList.remove('active');
+            document.getElementById('lessonScreen').classList.add('active');
+            document.getElementById('lessonTitle').innerHTML = `📖 ${lesson.title}`;
+            document.getElementById('lessonContent').innerHTML = lesson.content;
+            
+            showTab('content');
+            resetQuiz();
+        }
+
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            event.target?.classList.add('active') || document.querySelector(`.tab-btn:first-child`).classList.add('active');
+            document.getElementById(`${tabName}Tab`).classList.add('active');
+            
+            if (tabName === 'quiz') {
+                startQuiz();
+            } else if (tabName === 'games') {
+                document.getElementById('matchingGame').classList.remove('active');
+                document.getElementById('gamesGrid').style.display = 'grid';
+                state.gameActive = false;
+            }
+        }
+
+        // ============================================
+        // QUIZ SYSTEM
+        // ============================================
+        function resetQuiz() {
+            state.currentQuestionIndex = 0;
+            state.quizAnswers = [];
+        }
+
+        function startQuiz() {
+            const lesson = state.currentLesson;
+            if (!lesson.quiz || lesson.quiz.length === 0) {
+                document.getElementById('quizContent').innerHTML = '<p style="text-align: center;">لا يوجد اختبار لهذا الدرس حالياً.</p>';
+                return;
+            }
+            
+            state.currentQuestionIndex = 0;
+            state.quizAnswers = [];
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            const lesson = state.currentLesson;
+            const quiz = lesson.quiz;
+            const qIndex = state.currentQuestionIndex;
+            
+            if (qIndex >= quiz.length) {
+                showQuizResults();
+                return;
+            }
+            
+            const question = quiz[qIndex];
+            const progress = ((qIndex + 1) / quiz.length) * 100;
+            
+            document.getElementById('quizContent').innerHTML = `
+                <div class="quiz-container">
+                    <div class="quiz-progress">
+                        <div class="quiz-progress-text">السؤال ${qIndex + 1} من ${quiz.length}</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${progress}%; background: linear-gradient(90deg, var(--emerald), var(--amber));"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="question-card">
+                        <div class="question-text">❓ ${question.q}</div>
+                        <div class="options-list">
+                            ${question.options.map((opt, i) => `
+                                <button class="option-btn" onclick="selectAnswer(${i})">${opt}</button>
+                            `).join('')}
+                        </div>
+                        <div id="questionFeedback"></div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function selectAnswer(optionIndex) {
+            const lesson = state.currentLesson;
+            const question = lesson.quiz[state.currentQuestionIndex];
+            const isCorrect = optionIndex === question.correct;
+            
+            state.quizAnswers.push({ questionIndex: state.currentQuestionIndex, selected: optionIndex, correct: isCorrect });
+            
+            const buttons = document.querySelectorAll('.option-btn');
+            buttons.forEach((btn, i) => {
+                btn.disabled = true;
+                if (i === question.correct) {
+                    btn.classList.add('correct');
+                } else if (i === optionIndex && !isCorrect) {
+                    btn.classList.add('wrong');
+                }
+            });
+            
+            const feedbackEl = document.getElementById('questionFeedback');
+            const correctMessages = ['أحسنت! 🌟', 'ممتاز! 🎉', 'رائع جداً! ⭐', 'بارك الله فيك! 💫'];
+            const wrongMessages = ['محاولة رائعة! 💪', 'فكر مرة أخرى 🤔', 'لا تيأس! 🌈', 'استمر! ✨'];
+            
+            if (isCorrect) {
+                feedbackEl.innerHTML = `<div class="feedback-message correct">${correctMessages[Math.floor(Math.random() * correctMessages.length)]}</div>`;
+                addPoints(10);
+            } else {
+                feedbackEl.innerHTML = `<div class="feedback-message wrong">${wrongMessages[Math.floor(Math.random() * wrongMessages.length)]}</div>`;
+            }
+            
+            setTimeout(() => {
+                state.currentQuestionIndex++;
+                renderQuestion();
+            }, 1500);
+        }
+
+        function showQuizResults() {
+            const correct = state.quizAnswers.filter(a => a.correct).length;
+            const total = state.quizAnswers.length;
+            const percentage = Math.round((correct / total) * 100);
+            const passed = percentage >= 70;
+            
+            if (passed && !state.completedLessons.includes(state.currentLesson.id)) {
+                state.completedLessons.push(state.currentLesson.id);
+                state.streak++;
+                addPoints(50);
+                saveState();
+                showConfetti();
+            }
+            
+            const messages = passed 
+                ? ['🎉 تهانينا! لقد اجتزت الاختبار', '🌟 أداء رائع!', '✨ ممتاز!']
+                : ['💪 حاول مرة أخرى', '🤔 تحتاج لمراجعة الدرس', '📚 لا تستسلم!'];
+            
+            document.getElementById('quizContent').innerHTML = `
+                <div class="results-container">
+                    <div class="results-score">${percentage}%</div>
+                    <div class="results-message">${messages[Math.floor(Math.random() * messages.length)]}</div>
+                    <div class="results-details">
+                        <div class="results-stat">
+                            <div class="results-stat-value" style="color: var(--emerald);">${correct}</div>
+                            <div class="results-stat-label">إجابات صحيحة</div>
+                        </div>
+                        <div class="results-stat">
+                            <div class="results-stat-value" style="color: var(--red);">${total - correct}</div>
+                            <div class="results-stat-label">إجابات خاطئة</div>
+                        </div>
+                        <div class="results-stat">
+                            <div class="results-stat-value" style="color: var(--amber);">+${correct * 10 + (passed ? 50 : 0)}</div>
+                            <div class="results-stat-label">نقاط مكتسبة</div>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                        <button class="btn btn-primary" onclick="startQuiz()">🔄 إعادة الاختبار</button>
+                        <button class="btn btn-secondary" onclick="showTab('games')">🎮 جرب الألعاب</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ============================================
+        // GAMES SYSTEM
+        // ============================================
+        function startGame(gameType) {
+            if (gameType === 'matching') {
+                startMatchingGame();
+            } else if (gameType === 'sorting') {
+                alert('لعبة الترتيب قيد التطوير! جرب لعبة المطابقة.');
+            }
+        }
+
+        function startMatchingGame() {
+            const lesson = state.currentLesson;
+            if (!lesson.matchingPairs || lesson.matchingPairs.length === 0) {
+                alert('لا توجد لعبة مطابقة لهذا الدرس.');
+                return;
+            }
+            
+            state.gameActive = true;
+            state.matchingSelected = { term: null, definition: null };
+            state.matchedPairs = [];
+            
+            document.getElementById('gamesGrid').style.display = 'none';
+            document.getElementById('matchingGame').classList.add('active');
+            
+            const pairs = lesson.matchingPairs;
+            const shuffledTerms = [...pairs].sort(() => Math.random() - 0.5);
+            const shuffledDefs = [...pairs].sort(() => Math.random() - 0.5);
+            
+            document.getElementById('termsColumn').innerHTML = shuffledTerms.map((pair, i) => `
+                <div class="matching-item" data-type="term" data-index="${pairs.indexOf(pair)}" onclick="selectMatchingItem(this, 'term', ${pairs.indexOf(pair)})">
+                    ${pair.term}
+                </div>
+            `).join('');
+            
+            document.getElementById('definitionsColumn').innerHTML = shuffledDefs.map((pair, i) => `
+                <div class="matching-item" data-type="definition" data-index="${pairs.indexOf(pair)}" onclick="selectMatchingItem(this, 'definition', ${pairs.indexOf(pair)})">
+                    ${pair.definition}
+                </div>
+            `).join('');
+            
+            document.getElementById('matchCount').textContent = '0';
+            document.getElementById('totalMatches').textContent = pairs.length;
+        }
+
+        function selectMatchingItem(element, type, index) {
+            if (element.classList.contains('matched')) return;
+            
+            // Remove previous selection of same type
+            document.querySelectorAll(`.matching-item[data-type="${type}"]`).forEach(el => {
+                el.classList.remove('selected');
+            });
+            
+            element.classList.add('selected');
+            state.matchingSelected[type] = index;
+            
+            // Check if both term and definition are selected
+            if (state.matchingSelected.term !== null && state.matchingSelected.definition !== null) {
+                checkMatch();
+            }
+        }
+
+        function checkMatch() {
+            const termIndex = state.matchingSelected.term;
+            const defIndex = state.matchingSelected.definition;
+            
+            const termEl = document.querySelector(`.matching-item[data-type="term"][data-index="${termIndex}"]`);
+            const defEl = document.querySelector(`.matching-item[data-type="definition"][data-index="${defIndex}"]`);
+            
+            if (termIndex === defIndex) {
+                // Correct match
+                termEl.classList.remove('selected');
+                defEl.classList.remove('selected');
+                termEl.classList.add('matched');
+                defEl.classList.add('matched');
+                state.matchedPairs.push(termIndex);
+                addPoints(15);
+                
+                document.getElementById('matchCount').textContent = state.matchedPairs.length;
+                
+                // Check if game complete
+                if (state.matchedPairs.length === state.currentLesson.matchingPairs.length) {
+                    setTimeout(() => {
+                        addPoints(50);
+                        showConfetti();
+                        alert('🎉 أحسنت! أكملت اللعبة بنجاح!');
+                    }, 500);
+                }
+            } else {
+                // Wrong match
+                termEl.classList.add('wrong');
+                defEl.classList.add('wrong');
+                
+                setTimeout(() => {
+                    termEl.classList.remove('selected', 'wrong');
+                    defEl.classList.remove('selected', 'wrong');
+                }, 500);
+            }
+            
+            state.matchingSelected = { term: null, definition: null };
+        }
+
+        function closeGame() {
+            document.getElementById('matchingGame').classList.remove('active');
+            document.getElementById('gamesGrid').style.display = 'grid';
+            state.gameActive = false;
+        }
+
+        // ============================================
+        // TEACHER DASHBOARD
+        // ============================================
+        function showDashboard() {
+            document.getElementById('homeScreen').style.display = 'none';
+            document.getElementById('lessonsScreen').classList.remove('active');
+            document.getElementById('lessonScreen').classList.remove('active');
+            document.getElementById('dashboardScreen').classList.add('active');
+        }
+
+        // ============================================
+        // EFFECTS
+        // ============================================
+        function showConfetti() {
+            const confetti = document.getElementById('confetti');
+            confetti.classList.add('active');
+            confetti.innerHTML = '';
+            
+            const colors = ['#10b981', '#f59e0b', '#8b5cf6', '#3b82f6', '#ef4444'];
+            
+            for (let i = 0; i < 50; i++) {
+                const piece = document.createElement('div');
+                piece.className = 'confetti-piece';
+                piece.style.left = `${Math.random() * 100}%`;
+                piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                piece.style.animationDelay = `${Math.random() * 2}s`;
+                piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                confetti.appendChild(piece);
+            }
+            
+            setTimeout(() => {
+                confetti.classList.remove('active');
+            }, 3000);
+        }
+
+        function showFeedback(message, type) {
+            const feedback = document.createElement('div');
+            feedback.className = `feedback-message ${type}`;
+            feedback.style.position = 'fixed';
+            feedback.style.top = '50%';
+            feedback.style.left = '50%';
+            feedback.style.transform = 'translate(-50%, -50%)';
+            feedback.style.zIndex = '1000';
+            feedback.style.padding = '2rem';
+            feedback.style.fontSize = '1.5rem';
+            feedback.textContent = message;
+            document.body.appendChild(feedback);
+            
+            setTimeout(() => {
+                feedback.remove();
+            }, 2000);
+        }
+
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+        document.addEventListener('DOMContentLoaded', () => {
+            loadState();
+        });
+    </script>
+</body>
+</html>
